@@ -53,6 +53,7 @@ class Database
         try {
             if ($this->tableExists('users')) {
                 $this->ensureMediaTable();
+                $this->dropFeaturedContentFk();
                 return;
             }
         } catch (\Throwable $e) {
@@ -86,6 +87,48 @@ class Database
                 updated_at DATETIME DEFAULT CURRENT_TIMESTAMP
             )"
         );
+    }
+
+    /**
+     * The featured_content.item_id originally had a FOREIGN KEY to movies(id),
+     * which wrongly rejected series and media items. Rebuild the table without
+     * that constraint so any content type can be featured on the home page.
+     */
+    private function dropFeaturedContentFk(): void
+    {
+        $fks = $this->pdo->query("PRAGMA foreign_key_list(featured_content)")->fetchAll(\PDO::FETCH_ASSOC);
+        $hasMoviesFk = false;
+        foreach ($fks as $fk) {
+            if (($fk['table'] ?? '') === 'movies') {
+                $hasMoviesFk = true;
+                break;
+            }
+        }
+        if (!$hasMoviesFk) {
+            return;
+        }
+
+        $this->pdo->exec('PRAGMA foreign_keys = OFF');
+        $this->pdo->exec('ALTER TABLE featured_content RENAME TO featured_content_old');
+        $this->pdo->exec(
+            "CREATE TABLE featured_content (
+                id INTEGER PRIMARY KEY AUTOINCREMENT,
+                item_type VARCHAR(20) NOT NULL,
+                item_id INTEGER NOT NULL,
+                section VARCHAR(100) NOT NULL,
+                sort_order INTEGER DEFAULT 0,
+                label VARCHAR(255),
+                start_date DATETIME,
+                end_date DATETIME,
+                created_at DATETIME DEFAULT CURRENT_TIMESTAMP
+            )"
+        );
+        $this->pdo->exec(
+            "INSERT INTO featured_content (id, item_type, item_id, section, sort_order, label, start_date, end_date, created_at)
+             SELECT id, item_type, item_id, section, sort_order, label, start_date, end_date, created_at FROM featured_content_old"
+        );
+        $this->pdo->exec('DROP TABLE featured_content_old');
+        $this->pdo->exec('PRAGMA foreign_keys = ON');
     }
 
     private function runSqlFile(string $path): void

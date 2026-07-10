@@ -474,8 +474,7 @@ CREATE TABLE IF NOT EXISTS featured_content (
     label VARCHAR(255),
     start_date DATETIME,
     end_date DATETIME,
-    created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
-    FOREIGN KEY (item_id) REFERENCES movies(id) ON DELETE CASCADE
+    created_at DATETIME DEFAULT CURRENT_TIMESTAMP
 );
 
 -- ============================================
