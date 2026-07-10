@@ -7,6 +7,10 @@ $seriesMap = [];
 foreach (($series ?? []) as $s) {
     $seriesMap[(int)$s['id']] = $s['title'];
 }
+$mediaMap = [];
+foreach (($media ?? []) as $mm) {
+    $mediaMap[(int)$mm['id']] = $mm['title'];
+}
 ?>
 
 <div class="bg-white dark:bg-gray-800 rounded-xl shadow-sm p-6">
@@ -18,6 +22,7 @@ foreach (($series ?? []) as $s) {
             <select name="item_type" id="hc-type" class="w-full bg-gray-50 dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-lg px-3 py-2">
                 <option value="movie">Movie</option>
                 <option value="series">Series</option>
+                <option value="media">Uploaded Media</option>
             </select>
         </div>
         <div class="md:col-span-2">
@@ -38,6 +43,7 @@ foreach (($series ?? []) as $s) {
     </form>
     <script type="application/json" id="hc-movies-data"><?= json_encode(array_map(fn($m) => ['id' => (int)$m['id'], 'title' => $m['title']], $movies ?? []), JSON_UNESCAPED_SLASHES) ?></script>
     <script type="application/json" id="hc-series-data"><?= json_encode(array_map(fn($s) => ['id' => (int)$s['id'], 'title' => $s['title']], $series ?? []), JSON_UNESCAPED_SLASHES) ?></script>
+    <script type="application/json" id="hc-media-data"><?= json_encode(array_map(fn($mm) => ['id' => (int)$mm['id'], 'title' => $mm['title'] . ' (' . $mm['type'] . ')'], $media ?? []), JSON_UNESCAPED_SLASHES) ?></script>
 </div>
 
 <div class="mt-6 bg-white dark:bg-gray-800 rounded-xl shadow-sm overflow-hidden">
@@ -54,10 +60,20 @@ foreach (($series ?? []) as $s) {
         </thead>
         <tbody>
             <?php foreach (($homeContent ?? []) as $c): ?>
+                <?php
+                $title = '#' . $c['item_id'];
+                if ($c['item_type'] === 'series') {
+                    $title = $seriesMap[$c['item_id']] ?? $title;
+                } elseif ($c['item_type'] === 'media') {
+                    $title = $mediaMap[$c['item_id']] ?? $title;
+                } else {
+                    $title = $movieMap[$c['item_id']] ?? $title;
+                }
+                ?>
                 <tr class="border-t border-gray-200 dark:border-gray-700">
                     <td class="px-4 py-3"><?= e($c['section']) ?></td>
                     <td class="px-4 py-3"><?= e($c['item_type']) ?></td>
-                    <td class="px-4 py-3"><?= e(($c['item_type'] === 'series' ? ($seriesMap[$c['item_id']] ?? null) : ($movieMap[$c['item_id']] ?? null)) ?? ('#' . $c['item_id'])) ?></td>
+                    <td class="px-4 py-3"><?= e($title) ?></td>
                     <td class="px-4 py-3"><?= e($c['sort_order']) ?></td>
                     <td class="px-4 py-3">
                         <button onclick="deleteItem('/admin/featured/<?= $c['id'] ?>')" class="text-red-500 hover:underline text-sm">Delete</button>

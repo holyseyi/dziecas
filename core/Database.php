@@ -52,6 +52,7 @@ class Database
     {
         try {
             if ($this->tableExists('users')) {
+                $this->ensureMediaTable();
                 return;
             }
         } catch (\Throwable $e) {
@@ -60,6 +61,31 @@ class Database
 
         $this->runSqlFile(__DIR__ . '/../database/schema.sql');
         $this->runSqlFile(__DIR__ . '/../database/seeds.sql');
+    }
+
+    /**
+     * Create the media table on existing deployments that were bootstrapped
+     * before it was added (self-init only runs when the users table is absent).
+     */
+    private function ensureMediaTable(): void
+    {
+        if ($this->tableExists('media')) {
+            return;
+        }
+        $this->pdo->exec(
+            "CREATE TABLE IF NOT EXISTS media (
+                id INTEGER PRIMARY KEY AUTOINCREMENT,
+                type VARCHAR(20) NOT NULL,
+                title VARCHAR(255) NOT NULL,
+                description TEXT,
+                file_path VARCHAR(255) NOT NULL,
+                thumbnail VARCHAR(255),
+                duration INTEGER DEFAULT 0,
+                status VARCHAR(20) DEFAULT 'active',
+                created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+                updated_at DATETIME DEFAULT CURRENT_TIMESTAMP
+            )"
+        );
     }
 
     private function runSqlFile(string $path): void

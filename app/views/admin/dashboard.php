@@ -39,10 +39,13 @@
     </div>
 </div>
 
+<?= $this->partial('admin.partials.media-upload', []) ?>
+
 <?= $this->partial('admin.partials.home-content', [
     'homeContent' => $homeContent ?? [],
     'movies' => $movies ?? [],
-    'series' => $series ?? []
+    'series' => $series ?? [],
+    'media' => $media ?? []
 ]) ?>
 
 <div class="mt-8 bg-white dark:bg-gray-800 rounded-xl shadow-sm p-6">

@@ -17,9 +17,11 @@ return [
     'DB_PATH' => getenv('DB_PATH') ?: __DIR__ . '/../database/database.sqlite',
 
     'UPLOAD_MAX_SIZE' => 50 * 1024 * 1024,
+    'MEDIA_MAX_SIZE' => 200 * 1024 * 1024,
     'UPLOAD_ALLOWED_TYPES' => [
         'image/jpeg', 'image/png', 'image/gif', 'image/webp',
-        'video/mp4', 'video/webm',
+        'video/mp4', 'video/webm', 'video/ogg', 'video/quicktime',
+        'audio/mpeg', 'audio/mp3', 'audio/wav', 'audio/ogg', 'audio/webm', 'audio/aac', 'audio/x-m4a', 'audio/mp4',
         'application/pdf',
         'text/plain'
     ],

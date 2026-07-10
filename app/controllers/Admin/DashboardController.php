@@ -11,6 +11,7 @@ use Models\Series;
 use Models\Comment;
 use Models\AuditLog;
 use Models\FeaturedContent;
+use Models\Media;
 
 class DashboardController extends Controller
 {
@@ -40,7 +41,8 @@ class DashboardController extends Controller
             'stats' => $stats,
             'homeContent' => (new FeaturedContent())->all('sort_order ASC'),
             'movies' => \Core\Database::getInstance()->fetchAll("SELECT id, title FROM movies WHERE status = 'published' ORDER BY title ASC"),
-            'series' => \Core\Database::getInstance()->fetchAll("SELECT id, title FROM series WHERE status = 'published' ORDER BY title ASC")
+            'series' => \Core\Database::getInstance()->fetchAll("SELECT id, title FROM series WHERE status = 'published' ORDER BY title ASC"),
+            'media' => (new Media())->all('created_at DESC')
         ]);
     }
 }

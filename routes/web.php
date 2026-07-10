@@ -6,6 +6,8 @@ require_once __DIR__ . '/../helpers/functions.php';
 
 $router = new \Core\Router();
 
+$router->get('/storage/{path}', 'MediaController@serve');
+
 $router->get('/', 'HomeController@index');
 $router->get('/movies', 'MovieController@index');
 $router->get('/movie/{slug}', 'MovieController@show');
@@ -69,6 +71,10 @@ $router->prefix('admin', function() use ($router) {
     $router->get('/login', 'Admin\AuthController@loginForm');
     $router->post('/login', 'Admin\AuthController@login');
     $router->get('/logout', 'Admin\AuthController@logout');
+
+    $router->get('/media', 'Admin\MediaController@index');
+    $router->post('/media', 'Admin\MediaController@store');
+    $router->delete('/media/{id}', 'Admin\MediaController@destroy');
 
     $router->get('/movies', 'Admin\MovieController@index');
     $router->get('/movies/create', 'Admin\MovieController@create');

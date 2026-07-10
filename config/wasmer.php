@@ -37,6 +37,8 @@ $requiredDirs = [
     '/tmp/storage/uploads/banners',
     '/tmp/storage/uploads/screenshots',
     '/tmp/storage/uploads/trailers',
+    '/tmp/storage/uploads/videos',
+    '/tmp/storage/uploads/music',
     '/tmp/storage/uploads/avatars',
     '/tmp/cache',
     '/tmp/logs',

@@ -22,9 +22,17 @@ document.addEventListener('DOMContentLoaded', function () {
     const itemSelect = document.getElementById('hc-item');
     const movies = JSON.parse(document.getElementById('hc-movies-data').textContent || '[]');
     const series = JSON.parse(document.getElementById('hc-series-data').textContent || '[]');
+    const media = JSON.parse(document.getElementById('hc-media-data').textContent || '[]');
 
     function populate() {
-        const list = typeSelect.value === 'series' ? series : movies;
+        let list;
+        if (typeSelect.value === 'series') {
+            list = series;
+        } else if (typeSelect.value === 'media') {
+            list = media;
+        } else {
+            list = movies;
+        }
         itemSelect.innerHTML = '';
         list.forEach(function (item) {
             const opt = document.createElement('option');
@@ -64,4 +72,46 @@ document.addEventListener('DOMContentLoaded', function () {
             btn.disabled = false;
         });
     });
+
+    const mediaForm = document.getElementById('media-upload-form');
+    if (mediaForm) {
+        const mediaStatus = document.getElementById('media-upload-status');
+        mediaForm.addEventListener('submit', function (e) {
+            e.preventDefault();
+
+            const btn = mediaForm.querySelector('button[type="submit"]');
+            btn.disabled = true;
+            if (mediaStatus) {
+                mediaStatus.classList.add('hidden');
+                mediaStatus.textContent = '';
+            }
+
+            const data = new FormData(mediaForm);
+
+            fetch(mediaForm.action, {
+                method: 'POST',
+                headers: { 'X-Requested-With': 'XMLHttpRequest', 'Accept': 'application/json' },
+                body: data
+            })
+            .then(function (r) { return r.json(); })
+            .then(function (resp) {
+                if (resp && resp.success) {
+                    if (mediaStatus) {
+                        mediaStatus.textContent = 'Uploaded successfully.';
+                        mediaStatus.className = 'text-sm mt-3 text-green-600 dark:text-green-400';
+                    }
+                    setTimeout(function () { location.reload(); }, 700);
+                    return;
+                }
+                throw new Error((resp && resp.error) ? resp.error : 'Upload failed.');
+            })
+            .catch(function (err) {
+                if (mediaStatus) {
+                    mediaStatus.textContent = err.message || 'Upload failed.';
+                    mediaStatus.className = 'text-sm mt-3 text-red-600 dark:text-red-400';
+                }
+                btn.disabled = false;
+            });
+        });
+    }
 });

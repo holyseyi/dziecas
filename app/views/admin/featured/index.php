@@ -4,5 +4,6 @@
 <?= $this->partial('admin.partials.home-content', [
     'homeContent' => $content ?? [],
     'movies' => \Core\Database::getInstance()->fetchAll("SELECT id, title FROM movies WHERE status = 'published' ORDER BY title ASC"),
-    'series' => \Core\Database::getInstance()->fetchAll("SELECT id, title FROM series WHERE status = 'published' ORDER BY title ASC")
+    'series' => \Core\Database::getInstance()->fetchAll("SELECT id, title FROM series WHERE status = 'published' ORDER BY title ASC"),
+    'media' => \Core\Database::getInstance()->fetchAll("SELECT id, title, type FROM media ORDER BY created_at DESC")
 ]) ?>

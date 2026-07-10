@@ -42,12 +42,16 @@
     ?>
     <?php foreach ($homeSections as $sectionName => $items): ?>
         <section class="py-12 container mx-auto px-4">
-            <div class="flex items-center justify-between mb-8">
+            <div class="flex items-center gap-3 mb-8">
+                <span class="w-1.5 h-8 rounded-full bg-primary-600"></span>
                 <h2 class="text-3xl font-bold"><?= e($sectionName) ?></h2>
             </div>
-            <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4">
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
                 <?php foreach ($items as $fc): ?>
-                    <?php if ($fc['item_type'] === 'series'): ?>
+                    <?php if ($fc['item_type'] === 'media'): ?>
+                        <?php $item = (new \Models\Media())->find((int)$fc['item_id']); ?>
+                        <?php if ($item): ?><?= standalonePartial('media-card', ['media' => $item]) ?><?php endif; ?>
+                    <?php elseif ($fc['item_type'] === 'series'): ?>
                         <?php $item = (new \Models\Series())->find((int)$fc['item_id']); ?>
                         <?php if ($item): ?><?= standalonePartial('series-card', ['series' => $item]) ?><?php endif; ?>
                     <?php else: ?>

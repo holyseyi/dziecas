@@ -89,7 +89,9 @@ class Router
             }
 
             $path = $route['path'];
-            $regex = '#^' . preg_replace('#\{[^}]+\}#', '([^/]+)', $path) . '$#';
+            $regex = '#^' . preg_replace_callback('#\{([^}]+)\}#', function ($m) {
+                return $m[1] === 'path' ? '(.*)' : '([^/]+)';
+            }, $path) . '$#';
 
             if (preg_match($regex, $uri, $matches)) {
                 array_shift($matches);
