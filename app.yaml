@@ -1,5 +1,5 @@
-kind: wasmer.io/App.v0
 name: dziecas
+app_id: da_2yGI9trUyQBZ
 owner: holyseyi
 package: .
-app_id: da_2yGI9trUyQBZ
+kind: wasmer.io/App.v0

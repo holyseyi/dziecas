@@ -118,3 +118,14 @@ try {
 } catch (\Throwable $e) {
     error_log('Table verification failed: ' . $e->getMessage());
 }
+
+if ($isWasmer) {
+    return [
+        'DB_PATH' => DB_PATH,
+        'STORAGE_PATH' => STORAGE_PATH,
+        'CACHE_PATH' => CACHE_PATH,
+        'UPLOADS_PATH' => UPLOADS_PATH,
+    ];
+}
+
+return [];
