@@ -99,7 +99,7 @@ INSERT OR IGNORE INTO tags (name, slug) VALUES
 
 -- Admin user (password: admin123)
 INSERT OR IGNORE INTO users (id, username, email, password_hash, role_id, status) VALUES
-(1, 'admin', 'admin@moviehub.com', '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', 1, 'active');
+(1, 'admin', 'ddadzie124@gmail.com', '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', 1, 'active');
 
 -- Site Settings
 INSERT OR IGNORE INTO site_settings (`key`, value, type, `group`, is_public) VALUES
