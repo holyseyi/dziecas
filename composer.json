@@ -1,0 +1,25 @@
+{
+    "name": "moviehub/moviehub",
+    "description": "MovieHub - Entertainment Portal",
+    "type": "project",
+    "require": {
+        "php": ">=8.3",
+        "ext-pdo": "*",
+        "ext-sqlite3": "*",
+        "ext-session": "*"
+    },
+    "autoload": {
+        "psr-4": {
+            "Core\\": "core/",
+            "Controllers\\": "app/controllers/",
+            "Models\\": "app/models/",
+            "Helpers\\": "app/helpers/",
+            "Middleware\\": "app/middleware/"
+        }
+    },
+    "config": {
+        "platform": {
+            "php": "8.3.0"
+        }
+    }
+}

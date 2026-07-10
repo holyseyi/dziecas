@@ -1,0 +1,17 @@
+version: '3.8'
+
+services:
+  php:
+    build: .
+    ports:
+      - "8000:8000"
+    volumes:
+      - ./database:/app/database
+      - ./storage/uploads:/app/storage/uploads
+      - ./cache:/app/cache
+      - ./logs:/app/logs
+    environment:
+      - APP_ENV=production
+      - APP_DEBUG=false
+      - APP_URL=http://localhost:8000
+    restart: unless-stopped

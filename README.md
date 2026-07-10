@@ -127,6 +127,69 @@ GET  /api/settings        - Public settings
 - Safari (latest)
 - Edge (latest)
 
+## Wasmer Deployment
+
+This application is Wasmer-ready and can be deployed to the Wasmer edge runtime.
+
+### Prerequisites
+
+- [Wasmer CLI](https://docs.wasmer.com/installation) installed
+- [Wasmer account](https://wasmer.io/) for deployment
+
+### Local Development with Wasmer
+
+1. Install Wasmer:
+   ```bash
+   curl https://get.wasmer.io -sSfL | sh
+   ```
+
+2. Run the app locally with Wasmer:
+   ```bash
+   wasmer run .
+   ```
+
+3. Access the app at `http://localhost:8000`
+
+### Deploy to Wasmer
+
+1. Push your code to a Git repository (GitHub, GitLab, etc.)
+
+2. Deploy using Wasmer CLI:
+   ```bash
+   wasmer deploy .
+   ```
+
+3. Or deploy via [Wasmer Console](https://wasmer.io/):
+   - Connect your repository
+   - Set the build command: `php install.php`
+   - Set the start command: `php -S 0.0.0.0:8000 -t public`
+   - Add environment variables:
+     - `APP_ENV=production`
+     - `APP_DEBUG=false`
+
+### Wasmer Configuration
+
+The app includes the following Wasmer configuration files:
+
+- `wasmer.toml` - Main Wasmer configuration
+- `wasmer.json` - Deployment manifest
+- `config/wasmer.php` - Wasmer-specific PHP configuration
+
+### Environment Variables
+
+| Variable | Description | Default |
+|----------|-------------|---------|
+| `APP_ENV` | Application environment | `production` |
+| `APP_DEBUG` | Debug mode | `false` |
+| `APP_URL` | Application URL | `http://localhost` |
+
+### Notes
+
+- The SQLite database is stored in the `database/` directory
+- Uploaded files are stored in `storage/uploads/`
+- Make sure the `database/`, `storage/`, `cache/`, and `logs/` directories are writable
+- The app auto-initializes the database on first run if it doesn't exist
+
 ## License
 
 This project is open source and available under the MIT License.

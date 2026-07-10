@@ -1,0 +1,29 @@
+[package]
+name = "moviehub"
+version = "1.0.0"
+description = "MovieHub Entertainment Portal"
+author = "MovieHub Team"
+license = "MIT"
+repository = ""
+
+[service]
+http = true
+port = 8000
+document_root = "public"
+
+[service.env]
+APP_ENV = "production"
+APP_DEBUG = "false"
+APP_URL = "http://localhost"
+
+[service.files]
+includes = ["public/**/*", "app/**/*", "core/**/*", "config/**/*", "database/**/*", "helpers/**/*", "middleware/**/*", "routes/**/*", "assets/**/*"]
+excludes = ["*.sqlite", "logs/*", "cache/*", "storage/uploads/*", "node_modules/*", "vendor/*", ".git/*"]
+
+[service.command]
+command = "php"
+args = ["-S", "0.0.0.0:8000", "-t", "public"]
+
+[deployment]
+runtime = "php"
+version = "8.3"

@@ -1,0 +1,16 @@
+{
+  "name": "moviehub",
+  "version": "1.0.0",
+  "description": "MovieHub Entertainment Portal - Wasmer Deployment",
+  "main": "public/index.php",
+  "scripts": {
+    "start": "php -S 0.0.0.0:8000 -t public",
+    "install": "php install.php",
+    "test": "php -S localhost:8080 -t public & sleep 2 && curl -f http://localhost:8080/ && kill %1"
+  },
+  "keywords": ["php", "cms", "entertainment", "movies", "wasmer"],
+  "author": "MovieHub Team",
+  "license": "MIT",
+  "dependencies": {},
+  "devDependencies": {}
+}
