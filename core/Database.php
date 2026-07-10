@@ -15,8 +15,8 @@ class Database
     private function __construct()
     {
         $config = require __DIR__ . '/../config/config.php';
-        $driver = $config['DB_DRIVER'] ?? 'sqlite';
-        $path = $config['DB_PATH'] ?? __DIR__ . '/../database/database.sqlite';
+        $driver = defined('DB_DRIVER') ? DB_DRIVER : ($config['DB_DRIVER'] ?? 'sqlite');
+        $path = defined('DB_PATH') ? DB_PATH : ($config['DB_PATH'] ?? __DIR__ . '/../database/database.sqlite');
 
         try {
             $dsn = "sqlite:" . $path;
