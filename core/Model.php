@@ -91,6 +91,11 @@ class Model
         return (int)($result['total'] ?? 0);
     }
 
+    public function fetchColumn(string $sql, array $params = [], int $column = 0): mixed
+    {
+        return $this->db->fetchColumn($sql, $params, $column);
+    }
+
     public function paginate(int $page = 1, int $perPage = 20, string $orderBy = 'id DESC', ?string $where = null, array $params = []): array
     {
         $offset = ($page - 1) * $perPage;

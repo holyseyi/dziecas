@@ -13,10 +13,14 @@ class Router
     public function add(string $method, string $path, $handler): self
     {
         $path = '/' . ltrim($path, '/');
-        $prefix = $this->getPrefix();
+        $prefix = rtrim($this->getPrefix(), '/');
+        $full = $prefix . $path;
+        if ($path === '/') {
+            $full = $prefix === '' ? '/' : $prefix;
+        }
         $this->routes[] = [
             'method'  => strtoupper($method),
-            'path'    => $prefix . $path,
+            'path'    => $full,
             'handler' => $handler
         ];
         return $this;
