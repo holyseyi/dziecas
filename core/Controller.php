@@ -145,7 +145,12 @@ class Controller
 
     public function isAdmin(): bool
     {
-        return $this->isAuthenticated() && ($_SESSION['user']['role'] ?? '') === 'admin';
+        if (!$this->isAuthenticated()) {
+            return false;
+        }
+        $role = $_SESSION['user']['role'] ?? null;
+        $roleId = $_SESSION['user']['role_id'] ?? null;
+        return $role === 'admin' || $roleId == 1;
     }
 
     public function admin()

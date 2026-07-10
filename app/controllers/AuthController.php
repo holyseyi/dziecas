@@ -138,6 +138,7 @@ class AuthController extends Controller
         }
 
         unset($user['password_hash']);
+        $user['role'] = ($user['role_id'] ?? 2) == 1 ? 'admin' : 'user';
         $_SESSION['user_id'] = (int)$user['id'];
         $_SESSION['user'] = $user;
 
