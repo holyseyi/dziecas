@@ -109,7 +109,7 @@ class Controller
 
     public function csrfToken(): string
     {
-        if (empty($_SESSION['_csrf_token']) || (time() - $_SESSION['_csrf_time']) > CSRF_TOKEN_LIFETIME) {
+        if (empty($_SESSION['_csrf_token']) || (time() - $_SESSION['_csrf_time']) > \CSRF_TOKEN_LIFETIME) {
             $_SESSION['_csrf_token'] = bin2hex(random_bytes(32));
             $_SESSION['_csrf_time'] = time();
         }

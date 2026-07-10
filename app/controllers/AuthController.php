@@ -287,7 +287,7 @@ class AuthController extends Controller
 
         $ext = pathinfo($file['name'], PATHINFO_EXTENSION);
         $filename = 'avatar_' . (int)$_SESSION['user_id'] . '_' . time() . '.' . $ext;
-        $uploadPath = STORAGE_PATH . 'uploads/avatars/' . $filename;
+        $uploadPath = \STORAGE_PATH . 'uploads/avatars/' . $filename;
 
         if (!move_uploaded_file($file['tmp_name'], $uploadPath)) {
             $this->back();
