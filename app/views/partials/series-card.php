@@ -4,7 +4,7 @@
             <img src="<?= asset('uploads/posters/' . ($series['poster'] ?? 'default.jpg')) ?>" alt="" class="w-20 h-28 object-cover rounded-lg bg-gray-700 flex-shrink-0">
             <div class="flex-1 min-w-0">
                 <h3 class="font-semibold text-gray-900 dark:text-white truncate">
-                    <a href="<?= url('/series/' . $series['slug']) ?>" class="hover:text-primary-500 transition"><?= e($series['title']) ?></a>
+                    <a href="<?= path('/series/' . $series['slug']) ?>" class="hover:text-primary-500 transition"><?= e($series['title']) ?></a>
                 </h3>
                 <p class="text-gray-500 dark:text-gray-400 text-sm mt-1"><?= e($series['short_description'] ?? truncate($series['description'], 120)) ?></p>
                 <div class="flex items-center gap-3 mt-2">

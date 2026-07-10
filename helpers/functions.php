@@ -20,6 +20,13 @@ if (!function_exists('url')) {
     }
 }
 
+if (!function_exists('path')) {
+    function path(string $path = ''): string
+    {
+        return '/' . ltrim($path, '/');
+    }
+}
+
 if (!function_exists('asset')) {
     function asset(string $path): string
     {

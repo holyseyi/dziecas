@@ -3,7 +3,7 @@
         <img src="<?= asset('uploads/posters/' . ($movie['poster'] ?? 'default.jpg')) ?>" alt="" class="w-16 h-24 object-cover rounded-lg bg-gray-700">
         <div class="flex-1 min-w-0">
             <h3 class="font-semibold text-gray-900 dark:text-white truncate">
-                <a href="<?= url('/movie/' . $movie['slug']) ?>" class="hover:text-primary-500 transition"><?= e($movie['title']) ?></a>
+                <a href="<?= path('/movie/' . $movie['slug']) ?>" class="hover:text-primary-500 transition"><?= e($movie['title']) ?></a>
             </h3>
             <p class="text-gray-500 dark:text-gray-400 text-sm mt-1"><?= e($movie['short_description'] ?? truncate($movie['description'], 100)) ?></p>
             <div class="flex items-center gap-3 mt-2">

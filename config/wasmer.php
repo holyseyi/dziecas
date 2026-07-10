@@ -14,7 +14,7 @@ if (!defined('APP_DEBUG')) {
 }
 
 if (!defined('APP_URL')) {
-    define('APP_URL', getenv('APP_URL') ?: 'https://moviehub.wasmer.app');
+    define('APP_URL', getenv('APP_URL') ?: 'https://dziecar.wasmer.app');
 }
 
 // Disable maintenance mode on Wasmer
