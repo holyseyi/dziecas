@@ -36,8 +36,50 @@ class Database
             $this->pdo->exec('PRAGMA temp_store = MEMORY');
 
             $this->pdo->exec('PRAGMA foreign_keys = ON');
+
+            $this->initializeIfNeeded();
         } catch (PDOException $e) {
             throw new PDOException("Database connection failed: " . $e->getMessage());
+        }
+    }
+
+    /**
+     * Ensure the application schema (and seed data) exist. This keeps the app
+     * working on read-only/ephemeral deployments (e.g. Wasmer Edge) where the
+     * database file may be created fresh and not pre-seeded by the bootstrap.
+     */
+    private function initializeIfNeeded(): void
+    {
+        try {
+            if ($this->tableExists('users')) {
+                return;
+            }
+        } catch (\Throwable $e) {
+            // Unable to inspect the schema; attempt initialization below.
+        }
+
+        $this->runSqlFile(__DIR__ . '/../database/schema.sql');
+        $this->runSqlFile(__DIR__ . '/../database/seeds.sql');
+    }
+
+    private function runSqlFile(string $path): void
+    {
+        if (!file_exists($path)) {
+            return;
+        }
+        $sql = file_get_contents($path);
+        if ($sql === false || $sql === '') {
+            return;
+        }
+        foreach (array_filter(array_map('trim', explode(';', $sql))) as $statement) {
+            if ($statement === '') {
+                continue;
+            }
+            try {
+                $this->pdo->exec($statement);
+            } catch (\Throwable $e) {
+                error_log('Database init warning: ' . $e->getMessage());
+            }
         }
     }
 
