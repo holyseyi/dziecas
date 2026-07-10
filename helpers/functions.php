@@ -49,7 +49,11 @@ if (!function_exists('route')) {
 if (!function_exists('csrf_field')) {
     function csrf_field(): string
     {
-        $token = $_SESSION['_csrf_token'] ?? '';
+        if (empty($_SESSION['_csrf_token'])) {
+            $_SESSION['_csrf_token'] = bin2hex(random_bytes(32));
+            $_SESSION['_csrf_time'] = time();
+        }
+        $token = $_SESSION['_csrf_token'];
         return '<input type="hidden" name="csrf_token" value="' . e($token) . '">';
     }
 }
