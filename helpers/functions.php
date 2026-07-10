@@ -16,8 +16,9 @@ if (!function_exists('e')) {
 if (!function_exists('url')) {
     function url(string $path = ''): string
     {
-        return rtrim(App::getInstance()->getConfig('APP_URL', 'http://localhost'), '/') . '/' . ltrim($path, '/');
+        return '/' . ltrim($path, '/');
     }
+}
 }
 
 if (!function_exists('path')) {
