@@ -91,6 +91,41 @@ if (!file_exists(DB_PATH)) {
     }
 }
 
+// Validate database file and attempt recovery if corrupted or missing tables
+try {
+    $check = new PDO('sqlite:' . DB_PATH);
+    $check->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+    $check->query("SELECT name FROM sqlite_master WHERE type='table'")->fetchAll(PDO::FETCH_COLUMN);
+} catch (\Throwable $e) {
+    error_log('Database validation failed, attempting recovery: ' . $e->getMessage());
+    if (file_exists(DB_PATH)) {
+        @unlink(DB_PATH);
+    }
+    try {
+        $db = new PDO('sqlite:' . DB_PATH);
+        $db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+
+        $schemaPath = __DIR__ . '/../database/schema.sql';
+        if (file_exists($schemaPath)) {
+            $schema = file_get_contents($schemaPath);
+            if ($schema) {
+                $queries = array_filter(array_map('trim', explode(';', $schema)));
+                foreach ($queries as $query) {
+                    if (!empty($query)) {
+                        try {
+                            $db->exec($query);
+                        } catch (\Throwable $e) {
+                            error_log('Recovery schema error: ' . $e->getMessage());
+                        }
+                    }
+                }
+            }
+        }
+    } catch (\Throwable $e) {
+        error_log('Database recovery failed: ' . $e->getMessage());
+    }
+}
+
 // Verify tables exist and attempt recovery if missing
 try {
     $check = new PDO('sqlite:' . DB_PATH);
