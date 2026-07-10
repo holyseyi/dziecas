@@ -16,6 +16,12 @@
             </div>
             <button type="submit" class="w-full bg-primary-600 hover:bg-primary-700 text-white font-semibold py-3 rounded-lg transition">Login</button>
         </form>
+        <div class="mt-6 bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-800 text-blue-800 dark:text-blue-200 text-sm rounded-lg p-4">
+            <p class="font-semibold mb-1">Demo Admin Login</p>
+            <p>Email: <span class="font-mono">ddadzie124@gmail.com</span></p>
+            <p>Password: <span class="font-mono">password</span></p>
+        </div>
+
         <p class="mt-6 text-center text-sm text-gray-500"><a href="<?= url('/') ?>" class="text-primary-500 hover:underline">&larr; Back to site</a></p>
     </div>
 </section>
