@@ -4,25 +4,15 @@ declare(strict_types=1);
 
 // Wasmer-specific bootstrap
 
-$isWasmer = file_exists(__DIR__ . '/../config/wasmer.php');
+$isWasmer = getenv('APP_ENV') === 'production';
 
 if ($isWasmer) {
-    $wasmerConfig = require __DIR__ . '/../config/wasmer.php';
-
-    if (!empty($wasmerConfig['DB_PATH'] ?? '')) {
-        define('DB_PATH', $wasmerConfig['DB_PATH']);
-    }
-    if (!empty($wasmerConfig['STORAGE_PATH'] ?? '')) {
-        define('STORAGE_PATH', $wasmerConfig['STORAGE_PATH']);
-    }
-    if (!empty($wasmerConfig['CACHE_PATH'] ?? '')) {
-        define('CACHE_PATH', $wasmerConfig['CACHE_PATH']);
-    }
-    if (!empty($wasmerConfig['UPLOADS_PATH'] ?? '')) {
-        define('UPLOADS_PATH', $wasmerConfig['UPLOADS_PATH']);
-    }
-    if (!empty($wasmerConfig['APP_URL'] ?? '')) {
-        define('APP_URL', $wasmerConfig['APP_URL']);
+    define('DB_PATH', getenv('DB_PATH') ?: '/tmp/moviehub.sqlite');
+    define('STORAGE_PATH', '/tmp/storage/');
+    define('CACHE_PATH', '/tmp/cache/');
+    define('UPLOADS_PATH', '/tmp/storage/uploads/');
+    if (!empty(getenv('APP_URL'))) {
+        define('APP_URL', getenv('APP_URL'));
     }
 }
 
