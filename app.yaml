@@ -1,8 +1,7 @@
-kind: wasmer.io/App.v0
 name: dziecas
+app_id: da_2yGI9trUyQBZ
 owner: holyseyi
 package: .
-app_id: da_2yGI9trUyQBZ
-
 scaling:
   mode: single_concurrency
+kind: wasmer.io/App.v0
