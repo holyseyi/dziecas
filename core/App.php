@@ -11,7 +11,7 @@ class App
 
     private function __construct()
     {
-        date_default_timezone_set(APP_TIMEZONE);
+        date_default_timezone_set(\APP_TIMEZONE);
     }
 
     public static function getInstance(): App
@@ -32,7 +32,7 @@ class App
             }
         }
 
-        if (MAINTENANCE_MODE && !$this->isAdminRoute()) {
+        if (\MAINTENANCE_MODE && !$this->isAdminRoute()) {
             $this->renderMaintenance();
             return;
         }
