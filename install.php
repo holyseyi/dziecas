@@ -64,9 +64,9 @@ try {
     echo "\n=========================================\n";
     echo "  Installation Complete!\n";
     echo "=========================================\n";
-    echo "Default Admin Login:\n";
-    echo "  Email:    admin@moviehub.com\n";
-    echo "  Password: admin123\n";
+echo "Default Admin Login:\n";
+echo "  Email:    ddadzie124@gmail.com\n";
+echo "  Password: admin123\n";
     echo "  URL:      http://localhost/admin\n";
     echo "=========================================\n\n";
 

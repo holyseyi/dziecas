@@ -59,7 +59,7 @@ A complete production-ready Movie & Entertainment Portal built with PHP 8.3+, SQ
 ## Default Credentials
 
 - **Admin Panel**: http://localhost/moviehub/admin
-- **Email**: admin@moviehub.com
+- **Email**: ddadzie124@gmail.com
 - **Password**: admin123
 
 ## Project Structure
