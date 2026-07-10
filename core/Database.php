@@ -30,6 +30,7 @@ class Database
             $this->pdo = new PDO($dsn, null, null, $options);
 
             $this->pdo->exec('PRAGMA journal_mode = WAL');
+            $this->pdo->exec('PRAGMA busy_timeout = 5000');
             $this->pdo->exec('PRAGMA synchronous = NORMAL');
             $this->pdo->exec('PRAGMA cache_size = -64000');
             $this->pdo->exec('PRAGMA temp_store = MEMORY');

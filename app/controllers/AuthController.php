@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Controllers;
 
 use Core\Controller;
-use Core\CsrfMiddleware;
+use Middleware\CsrfMiddleware;
 use Models\User;
 use Models\Bookmark;
 

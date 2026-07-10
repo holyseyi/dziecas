@@ -14,7 +14,7 @@ class CsrfMiddleware
             return false;
         }
 
-        if ((time() - ($_SESSION['_csrf_time'] ?? 0)) > CSRF_TOKEN_LIFETIME) {
+        if ((time() - ($_SESSION['_csrf_time'] ?? 0)) > \CSRF_TOKEN_LIFETIME) {
             return false;
         }
 

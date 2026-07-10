@@ -2,12 +2,12 @@
   "runtime": "php",
   "version": "8.3",
   "deploy": {
-    "startCommand": "php -S 0.0.0.0:8000 -t public",
+    "startCommand": "sh -c 'mkdir -p public/assets && cp -rf assets/* public/assets/ 2>/dev/null; php -S 0.0.0.0:8000 -t public'",
     "httpPort": 8000,
     "documentRoot": "public",
     "env": {
       "APP_ENV": "production",
-      "APP_DEBUG": "true",
+      "APP_DEBUG": "false",
       "APP_URL": "https://dziecas.wasmer.app",
       "DB_PATH": "/tmp/moviehub.sqlite",
       "STORAGE_PATH": "/tmp/storage/",

@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Controllers\Admin;
 
 use Core\Controller;
-use Core\CsrfMiddleware;
+use Middleware\CsrfMiddleware;
 use Models\Actor;
 
 class ActorController extends Controller
