@@ -108,6 +108,9 @@ class AuthController extends Controller
         }
 
         if (!CsrfMiddleware::check()) {
+            if ($this->wantsJson()) {
+                $this->json(['error' => 'Invalid CSRF token'], 419);
+            }
             $this->back();
             $this->withError('form', 'Invalid CSRF token');
             return;
@@ -117,6 +120,9 @@ class AuthController extends Controller
         $password = $this->input('password', '');
 
         if (empty($email) || empty($password)) {
+            if ($this->wantsJson()) {
+                $this->json(['error' => 'Email and password are required'], 422);
+            }
             $this->back();
             $this->withError('form', 'Email and password are required');
             return;
@@ -126,12 +132,18 @@ class AuthController extends Controller
         $user = $userModel->findBy('email', $email);
 
         if (!$user || !password_verify($password, $user['password_hash'])) {
+            if ($this->wantsJson()) {
+                $this->json(['error' => 'Invalid email or password'], 401);
+            }
             $this->back();
             $this->withError('form', 'Invalid email or password');
             return;
         }
 
         if ($user['status'] !== 'active') {
+            if ($this->wantsJson()) {
+                $this->json(['error' => 'Your account has been disabled'], 403);
+            }
             $this->back();
             $this->withError('form', 'Your account has been disabled');
             return;
@@ -147,11 +159,13 @@ class AuthController extends Controller
             'last_login_ip' => get_client_ip()
         ]);
 
-        if ($user['role'] === 'admin' || ($user['role_id'] ?? 2) === 1) {
-            $this->redirect('/admin');
-        } else {
-            $this->redirect('/');
+        $target = ($user['role'] === 'admin' || ($user['role_id'] ?? 2) === 1) ? '/admin' : '/';
+
+        if ($this->wantsJson()) {
+            $this->json(['success' => true, 'redirect' => $target]);
         }
+
+        $this->redirect($target);
     }
 
     public function logout(): void

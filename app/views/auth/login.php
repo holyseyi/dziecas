@@ -5,8 +5,9 @@
         <?php if (!empty($error)): ?>
             <div class="bg-red-100 dark:bg-red-900/30 border border-red-400 text-red-700 px-4 py-3 rounded-lg mb-4"><?= e($error) ?></div>
         <?php endif; ?>
-        <form method="POST" action="<?= url('/login') ?>">
+        <form id="login-form" method="POST" action="<?= url('/login') ?>" class="login-form">
             <?= csrf_field() ?>
+            <div id="login-error" class="hidden bg-red-100 dark:bg-red-900/30 border border-red-400 text-red-700 px-4 py-3 rounded-lg mb-4"></div>
             <div class="mb-4">
                 <label class="block text-gray-700 dark:text-gray-300 font-medium mb-2">Email</label>
                 <input type="email" name="email" required class="w-full bg-gray-50 dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-lg px-4 py-3 focus:outline-none focus:ring-2 focus:ring-primary-500">
@@ -15,7 +16,10 @@
                 <label class="block text-gray-700 dark:text-gray-300 font-medium mb-2">Password</label>
                 <input type="password" name="password" required class="w-full bg-gray-50 dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-lg px-4 py-3 focus:outline-none focus:ring-2 focus:ring-primary-500">
             </div>
-            <button type="submit" class="w-full bg-primary-600 hover:bg-primary-700 text-white font-semibold py-3 rounded-lg transition">Login</button>
+            <button type="submit" class="w-full bg-primary-600 hover:bg-primary-700 text-white font-semibold py-3 rounded-lg transition flex items-center justify-center gap-2">
+                <span class="login-label">Login</span>
+                <span class="login-spinner hidden w-4 h-4 border-2 border-white/40 border-t-white rounded-full animate-spin"></span>
+            </button>
         </form>
         <div class="mt-6 bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-800 text-blue-800 dark:text-blue-200 text-sm rounded-lg p-4">
             <p class="font-semibold mb-1">Demo Admin Login</p>

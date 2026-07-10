@@ -15,3 +15,51 @@ function shareMovie(id) {
         navigator.clipboard.writeText(window.location.href);
     }
 }
+
+document.addEventListener('DOMContentLoaded', function() {
+    const form = document.getElementById('login-form');
+    if (!form) return;
+
+    const errorBox = document.getElementById('login-error');
+    const submitBtn = form.querySelector('button[type="submit"]');
+    const label = form.querySelector('.login-label');
+    const spinner = form.querySelector('.login-spinner');
+
+    form.addEventListener('submit', async function(e) {
+        e.preventDefault();
+
+        errorBox.classList.add('hidden');
+        errorBox.textContent = '';
+        submitBtn.disabled = true;
+        if (label) label.textContent = 'Logging in...';
+        if (spinner) spinner.classList.remove('hidden');
+
+        const formData = new FormData(form);
+
+        try {
+            const response = await fetch(form.action, {
+                method: 'POST',
+                headers: { 'X-Requested-With': 'XMLHttpRequest', 'Accept': 'application/json' },
+                body: formData
+            });
+
+            let data = {};
+            try { data = await response.json(); } catch (_) {}
+
+            if (response.ok && data.success && data.redirect) {
+                window.location.href = data.redirect;
+                return;
+            }
+
+            errorBox.textContent = data.error || 'Login failed. Please try again.';
+            errorBox.classList.remove('hidden');
+        } catch (err) {
+            errorBox.textContent = 'Network error. Please try again.';
+            errorBox.classList.remove('hidden');
+        } finally {
+            submitBtn.disabled = false;
+            if (label) label.textContent = 'Login';
+            if (spinner) spinner.classList.add('hidden');
+        }
+    });
+});

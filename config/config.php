@@ -11,6 +11,8 @@ return [
     'APP_LANG' => getenv('APP_LANG') ?: 'en',
     'APP_THEME' => getenv('APP_THEME') ?: 'dark',
 
+    'APP_KEY' => getenv('APP_KEY') ?: 'mh_9f3c7b1e2a4d6f8c0b5e7a1d3c9f2b6e4a8d0c1b7e3f5a9d2c6b8e0f4a1d7c3b',
+
     'DB_DRIVER' => getenv('DB_DRIVER') ?: 'sqlite',
     'DB_PATH' => getenv('DB_PATH') ?: __DIR__ . '/../database/database.sqlite',
 

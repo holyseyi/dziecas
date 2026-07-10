@@ -8,17 +8,6 @@ ini_set('display_startup_errors', '1');
 ini_set('log_errors', '1');
 ini_set('error_log', __DIR__ . '/../logs/php_errors.log');
 
-session_set_cookie_params([
-    'lifetime' => 0,
-    'path' => '/',
-    'domain' => '',
-    'secure' => isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on',
-    'httponly' => true,
-    'samesite' => 'Lax'
-]);
-
-session_start();
-
 require_once __DIR__ . '/../config/config.php';
 $config = require __DIR__ . '/../config/config.php';
 
@@ -39,7 +28,26 @@ require_once __DIR__ . '/../core/Router.php';
 require_once __DIR__ . '/../core/Controller.php';
 require_once __DIR__ . '/../core/Model.php';
 require_once __DIR__ . '/../core/View.php';
+require_once __DIR__ . '/../core/DatabaseSessionHandler.php';
 require_once __DIR__ . '/../helpers/functions.php';
+
+$sessionPdo = new \PDO('sqlite:' . (defined('DB_PATH') ? DB_PATH : __DIR__ . '/../database/database.sqlite'));
+$sessionPdo->setAttribute(\PDO::ATTR_ERRMODE, \PDO::ERRMODE_EXCEPTION);
+$sessionPdo->exec('PRAGMA journal_mode = WAL');
+$sessionPdo->exec('PRAGMA busy_timeout = 5000');
+$handler = new \Core\DatabaseSessionHandler($sessionPdo);
+session_set_save_handler($handler, true);
+
+session_set_cookie_params([
+    'lifetime' => 0,
+    'path' => '/',
+    'domain' => '',
+    'secure' => isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on',
+    'httponly' => true,
+    'samesite' => 'Lax'
+]);
+
+session_start();
 
 // Simple autoloader
 spl_autoload_register(function ($class) {

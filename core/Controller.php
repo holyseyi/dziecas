@@ -125,6 +125,15 @@ class Controller
         return true;
     }
 
+    public function wantsJson(): bool
+    {
+        if (isset($_SERVER['HTTP_X_REQUESTED_WITH']) && strtolower($_SERVER['HTTP_X_REQUESTED_WITH']) === 'xmlhttprequest') {
+            return true;
+        }
+        $accept = $_SERVER['HTTP_ACCEPT'] ?? '';
+        return str_contains($accept, 'application/json');
+    }
+
     public function isAuthenticated(): bool
     {
         return !empty($_SESSION['user_id']);
