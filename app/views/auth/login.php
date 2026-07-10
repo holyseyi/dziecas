@@ -11,6 +11,7 @@
         <form id="login-form" method="POST" action="<?= url('/login') ?>" class="login-form">
             <?= csrf_field() ?>
             <div id="login-error" class="hidden bg-red-100 dark:bg-red-900/30 border border-red-400 text-red-700 px-4 py-3 rounded-lg mb-4"></div>
+            <div id="login-success" class="hidden bg-green-100 dark:bg-green-900/30 border border-green-400 text-green-700 px-4 py-3 rounded-lg mb-4"></div>
             <div class="mb-4">
                 <label class="block text-gray-700 dark:text-gray-300 font-medium mb-2">Email</label>
                 <input type="email" name="email" required class="w-full bg-gray-50 dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-lg px-4 py-3 focus:outline-none focus:ring-2 focus:ring-primary-500">

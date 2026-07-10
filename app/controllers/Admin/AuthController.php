@@ -79,7 +79,10 @@ class AuthController extends Controller
         ]);
 
         $this->withSuccess('Login successful');
-        $this->redirect('/admin');
+        $this->view('admin.auth.login', [
+            'title' => 'Admin Login',
+            'redirect' => '/admin'
+        ]);
     }
 
     public function logout(): void

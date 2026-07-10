@@ -28,3 +28,10 @@
         <p class="mt-6 text-center text-sm text-gray-500"><a href="<?= url('/') ?>" class="text-primary-500 hover:underline">&larr; Back to site</a></p>
     </div>
 </section>
+<?php if ($this->success() && !empty($redirect)): ?>
+    <script>
+        setTimeout(function() {
+            window.location.href = '<?= e($redirect) ?>';
+        }, 1500);
+    </script>
+<?php endif; ?>

@@ -21,6 +21,7 @@ document.addEventListener('DOMContentLoaded', function() {
     if (!form) return;
 
     const errorBox = document.getElementById('login-error');
+    const successBox = document.getElementById('login-success');
     const submitBtn = form.querySelector('button[type="submit"]');
     const label = form.querySelector('.login-label');
     const spinner = form.querySelector('.login-spinner');
@@ -47,7 +48,15 @@ document.addEventListener('DOMContentLoaded', function() {
             try { data = await response.json(); } catch (_) {}
 
             if (response.ok && data.success && data.redirect) {
-                window.location.href = data.redirect;
+                errorBox.classList.add('hidden');
+                successBox.textContent = 'Login successful. Redirecting...';
+                successBox.classList.remove('hidden');
+                submitBtn.disabled = true;
+                if (label) label.textContent = 'Success!';
+                if (spinner) spinner.classList.add('hidden');
+                setTimeout(function() {
+                    window.location.href = data.redirect;
+                }, 1000);
                 return;
             }
 
