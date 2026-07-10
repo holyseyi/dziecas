@@ -10,6 +10,7 @@ use Models\Movie;
 use Models\Series;
 use Models\Comment;
 use Models\AuditLog;
+use Models\FeaturedContent;
 
 class DashboardController extends Controller
 {
@@ -36,7 +37,10 @@ class DashboardController extends Controller
 
         $this->view('admin.dashboard', [
             'title' => 'Dashboard - MovieHub Admin',
-            'stats' => $stats
+            'stats' => $stats,
+            'homeContent' => (new FeaturedContent())->all('sort_order ASC'),
+            'movies' => \Core\Database::getInstance()->fetchAll("SELECT id, title FROM movies WHERE status = 'published' ORDER BY title ASC"),
+            'series' => \Core\Database::getInstance()->fetchAll("SELECT id, title FROM series WHERE status = 'published' ORDER BY title ASC")
         ]);
     }
 }

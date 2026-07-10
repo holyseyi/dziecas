@@ -33,6 +33,33 @@
     </div>
 </section>
 
+<?php if (!empty($featuredContent)): ?>
+    <?php
+    $homeSections = [];
+    foreach ($featuredContent as $fc) {
+        $homeSections[$fc['section']][] = $fc;
+    }
+    ?>
+    <?php foreach ($homeSections as $sectionName => $items): ?>
+        <section class="py-12 container mx-auto px-4">
+            <div class="flex items-center justify-between mb-8">
+                <h2 class="text-3xl font-bold"><?= e($sectionName) ?></h2>
+            </div>
+            <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4">
+                <?php foreach ($items as $fc): ?>
+                    <?php if ($fc['item_type'] === 'series'): ?>
+                        <?php $item = (new \Models\Series())->find((int)$fc['item_id']); ?>
+                        <?php if ($item): ?><?= standalonePartial('series-card', ['series' => $item]) ?><?php endif; ?>
+                    <?php else: ?>
+                        <?php $item = (new \Models\Movie())->find((int)$fc['item_id']); ?>
+                        <?php if ($item): ?><?= standalonePartial('movie-card', ['movie' => $item]) ?><?php endif; ?>
+                    <?php endif; ?>
+                <?php endforeach; ?>
+            </div>
+        </section>
+    <?php endforeach; ?>
+<?php endif; ?>
+
 <?php if (!empty($featuredMovies) || !empty($latestMovies)): ?>
 <section class="py-12 container mx-auto px-4">
     <?php if (!empty($featuredMovies)): ?>

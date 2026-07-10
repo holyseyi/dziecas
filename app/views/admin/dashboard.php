@@ -39,6 +39,12 @@
     </div>
 </div>
 
+<?= $this->partial('admin.partials.home-content', [
+    'homeContent' => $homeContent ?? [],
+    'movies' => $movies ?? [],
+    'series' => $series ?? []
+]) ?>
+
 <div class="mt-8 bg-white dark:bg-gray-800 rounded-xl shadow-sm p-6">
     <h3 class="text-lg font-bold mb-4">Recent Activity</h3>
     <table class="w-full text-left text-sm">
