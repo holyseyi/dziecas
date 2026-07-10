@@ -6,20 +6,19 @@ author = "MovieHub Team"
 license = "MIT"
 repository = ""
 
-[service]
-http = true
-port = 8000
-document_root = "public"
+[dependencies]
+"php/php" = "=8.3"
 
-[service.env]
-APP_ENV = "production"
-APP_DEBUG = "false"
-APP_URL = "https://dziecas.wasmer.app"
-DB_PATH = "/tmp/moviehub.sqlite"
+[fs]
+"/app/" = "."
 
-[service.command]
-command = "php"
-args = ["-S", "0.0.0.0:8000", "-t", "public"]
+[[command]]
+name = "run"
+module = "php/php:php"
+runner = "wasi"
+
+[command.annotations.wasi]
+main-args = ["-t", "/app/public", "-S", "0.0.0.0:8000"]
 
 [deployment]
 runtime = "php"
