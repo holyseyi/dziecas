@@ -19,7 +19,6 @@ if (!function_exists('url')) {
         return '/' . ltrim($path, '/');
     }
 }
-}
 
 if (!function_exists('path')) {
     function path(string $path = ''): string
