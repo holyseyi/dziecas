@@ -35,8 +35,15 @@ img {
     height: auto;
 }
 
-a {
-    text-decoration: none;
+[x-cloak] {
+    display: none !important;
+}
+
+@media (max-width: 1023px) {
+    .container {
+        padding-left: 1rem;
+        padding-right: 1rem;
+    }
 }
 
 button, a {

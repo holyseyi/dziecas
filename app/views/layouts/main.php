@@ -11,6 +11,7 @@
     <meta property="og:description" content="<?= e($seo_description ?? '') ?>">
     <meta property="og:type" content="website">
     <link rel="icon" type="image/svg+xml" href="<?= asset('images/favicon.svg') ?>">
+    <link rel="stylesheet" href="<?= asset('css/custom.css') ?>">
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
         tailwind.config = { darkMode: 'class', theme: { extend: { colors: { primary: { 50: '#eff6ff', 100: '#dbeafe', 500: '#3b82f6', 600: '#2563eb', 700: '#1d4ed8', 900: '#1e3a8a' }, dark: { 800: '#1e293b', 900: '#0f172a', 950: '#020617' } } } } };
