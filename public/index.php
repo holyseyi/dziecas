@@ -75,7 +75,12 @@ try {
     $app->run();
 } catch (\Throwable $e) {
     http_response_code(500);
-    echo '<h1>Application Error</h1>';
-    echo '<pre>' . htmlspecialchars($e->getMessage()) . '</pre>';
-    echo '<pre>' . htmlspecialchars($e->getTraceAsString()) . '</pre>';
+    if (defined('APP_DEBUG') && APP_DEBUG) {
+        echo '<h1>Application Error</h1>';
+        echo '<pre>' . htmlspecialchars($e->getMessage()) . '</pre>';
+        echo '<pre>' . htmlspecialchars($e->getTraceAsString()) . '</pre>';
+    } else {
+        echo '<h1>500 Internal Server Error</h1>';
+        error_log($e->getMessage() . ' in ' . $e->getFile() . ':' . $e->getLine());
+    }
 }
