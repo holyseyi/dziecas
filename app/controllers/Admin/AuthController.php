@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Controllers\Admin;
 
 use Core\Controller;
+use Middleware\CsrfMiddleware;
 
 class AuthController extends Controller
 {
@@ -24,8 +25,24 @@ class AuthController extends Controller
             return;
         }
 
+        if (!CsrfMiddleware::check()) {
+            $this->view('admin.auth.login', [
+                'title' => 'Admin Login',
+                'error' => 'Invalid CSRF token'
+            ]);
+            return;
+        }
+
         $email = trim($this->input('email', ''));
         $password = $this->input('password', '');
+
+        if (empty($email) || empty($password)) {
+            $this->view('admin.auth.login', [
+                'title' => 'Admin Login',
+                'error' => 'Email and password are required'
+            ]);
+            return;
+        }
 
         $userModel = new \Models\User();
         $user = $userModel->findBy('email', $email);
@@ -34,6 +51,14 @@ class AuthController extends Controller
             $this->view('admin.auth.login', [
                 'title' => 'Admin Login',
                 'error' => 'Invalid credentials'
+            ]);
+            return;
+        }
+
+        if ($user['status'] !== 'active') {
+            $this->view('admin.auth.login', [
+                'title' => 'Admin Login',
+                'error' => 'Your account has been disabled'
             ]);
             return;
         }
@@ -53,6 +78,7 @@ class AuthController extends Controller
             'last_login_ip' => get_client_ip()
         ]);
 
+        $this->withSuccess('Login successful');
         $this->redirect('/admin');
     }
 

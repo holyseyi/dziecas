@@ -165,6 +165,7 @@ class AuthController extends Controller
             $this->json(['success' => true, 'redirect' => $target]);
         }
 
+        $this->withSuccess('Login successful');
         $this->redirect($target);
     }
 

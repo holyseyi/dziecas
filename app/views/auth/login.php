@@ -2,9 +2,12 @@
 <section class="min-h-screen flex items-center justify-center py-12">
     <div class="bg-white dark:bg-gray-800 rounded-2xl shadow-xl p-8 w-full max-w-md">
         <h1 class="text-3xl font-bold text-center mb-8">Login</h1>
-        <?php if (!empty($error)): ?>
-            <div class="bg-red-100 dark:bg-red-900/30 border border-red-400 text-red-700 px-4 py-3 rounded-lg mb-4"><?= e($error) ?></div>
+        <?php if ($this->success()): ?>
+            <div class="bg-green-100 dark:bg-green-900/30 border border-green-400 text-green-700 px-4 py-3 rounded-lg mb-4"><?= e($this->success()) ?></div>
         <?php endif; ?>
+        <?php foreach ($this->errors() as $msg): ?>
+            <div class="bg-red-100 dark:bg-red-900/30 border border-red-400 text-red-700 px-4 py-3 rounded-lg mb-4"><?= e($msg) ?></div>
+        <?php endforeach; ?>
         <form id="login-form" method="POST" action="<?= url('/login') ?>" class="login-form">
             <?= csrf_field() ?>
             <div id="login-error" class="hidden bg-red-100 dark:bg-red-900/30 border border-red-400 text-red-700 px-4 py-3 rounded-lg mb-4"></div>
