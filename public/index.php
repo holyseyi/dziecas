@@ -21,6 +21,12 @@ session_start();
 
 require_once __DIR__ . '/../config/config.php';
 $config = require __DIR__ . '/../config/config.php';
+
+if (file_exists(__DIR__ . '/../config/wasmer.php')) {
+    $wasmerConfig = require __DIR__ . '/../config/wasmer.php';
+    $config = array_merge($config, $wasmerConfig);
+}
+
 foreach ($config as $key => $value) {
     if (!defined($key)) {
         define($key, $value);

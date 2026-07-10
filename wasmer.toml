@@ -14,11 +14,8 @@ document_root = "public"
 [service.env]
 APP_ENV = "production"
 APP_DEBUG = "false"
-APP_URL = "http://localhost"
-
-[service.files]
-includes = ["public/**/*", "app/**/*", "core/**/*", "config/**/*", "database/**/*", "helpers/**/*", "middleware/**/*", "routes/**/*", "assets/**/*"]
-excludes = ["*.sqlite", "logs/*", "cache/*", "storage/uploads/*", "node_modules/*", "vendor/*", ".git/*"]
+APP_URL = "https://dziecas.wasmer.app"
+DB_PATH = "/tmp/moviehub.sqlite"
 
 [service.command]
 command = "php"

@@ -17,20 +17,35 @@ class HomeController extends Controller
     {
         $db = Database::getInstance();
 
-        $trendingMovies = $db->fetchAll("SELECT * FROM movies WHERE status = 'published' AND trending = 1 ORDER BY imdb_rating DESC LIMIT 10");
-        $trendingSeries = $db->fetchAll("SELECT * FROM series WHERE status = 'published' AND trending = 1 ORDER BY imdb_rating DESC LIMIT 10");
-        $featuredMovies = $db->fetchAll("SELECT * FROM movies WHERE status = 'published' AND featured = 1 ORDER BY published_at DESC LIMIT 8");
-        $latestMovies = $db->fetchAll("SELECT * FROM movies WHERE status = 'published' ORDER BY published_at DESC LIMIT 12");
-        $recentlyUpdatedSeries = $db->fetchAll("SELECT * FROM series WHERE status = 'published' ORDER BY updated_at DESC LIMIT 8");
-        $popularThisWeek = $db->fetchAll("SELECT * FROM movies WHERE status = 'published' ORDER BY view_count DESC LIMIT 10");
-        $anime = $db->fetchAll("SELECT m.* FROM movies m JOIN movie_genres mg ON m.id = mg.movie_id JOIN genres g ON mg.genre_id = g.id WHERE m.status = 'published' AND g.slug = 'animation' ORDER BY m.published_at DESC LIMIT 8");
+        $trendingMovies = [];
+        $trendingSeries = [];
+        $featuredMovies = [];
+        $latestMovies = [];
+        $recentlyUpdatedSeries = [];
+        $popularThisWeek = [];
+        $anime = [];
+        $featured = [];
+        $heroMovie = [];
+        $heroSeries = null;
+        $genres = [];
 
-        $featured = (new FeaturedContent())->all('sort_order ASC', 5);
-        $heroMovie = !empty($featured) ? (new Movie())->find((int)$featured[0]['item_id']) : ($latestMovies[0] ?? []);
-        $heroSeries = !empty($featured) ? (new Series())->find((int)$featured[0]['item_id']) : null;
+        try {
+            $trendingMovies = $db->fetchAll("SELECT * FROM movies WHERE status = 'published' AND trending = 1 ORDER BY imdb_rating DESC LIMIT 10");
+            $trendingSeries = $db->fetchAll("SELECT * FROM series WHERE status = 'published' AND trending = 1 ORDER BY imdb_rating DESC LIMIT 10");
+            $featuredMovies = $db->fetchAll("SELECT * FROM movies WHERE status = 'published' AND featured = 1 ORDER BY published_at DESC LIMIT 8");
+            $latestMovies = $db->fetchAll("SELECT * FROM movies WHERE status = 'published' ORDER BY published_at DESC LIMIT 12");
+            $recentlyUpdatedSeries = $db->fetchAll("SELECT * FROM series WHERE status = 'published' ORDER BY updated_at DESC LIMIT 8");
+            $popularThisWeek = $db->fetchAll("SELECT * FROM movies WHERE status = 'published' ORDER BY view_count DESC LIMIT 10");
+            $anime = $db->fetchAll("SELECT m.* FROM movies m JOIN movie_genres mg ON m.id = mg.movie_id JOIN genres g ON mg.genre_id = g.id WHERE m.status = 'published' AND g.slug = 'animation' ORDER BY m.published_at DESC LIMIT 8");
 
-        $genres = (new Genre())->all('sort_order ASC');
-        $activeGenres = array_filter($genres, fn($g) => $g['status'] === 'active');
+            $featured = (new FeaturedContent())->all('sort_order ASC', 5);
+            $heroMovie = !empty($featured) ? (new Movie())->find((int)$featured[0]['item_id']) : ($latestMovies[0] ?? []);
+            $heroSeries = !empty($featured) ? (new Series())->find((int)$featured[0]['item_id']) : null;
+
+            $genres = (new Genre())->all('sort_order ASC');
+        } catch (\Throwable $e) {
+            error_log('HomeController database error: ' . $e->getMessage());
+        }
 
         $this->view('home.index', [
             'title' => 'MovieHub - Watch Latest Movies & TV Series',

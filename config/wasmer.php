@@ -21,39 +21,31 @@ if (!defined('APP_URL')) {
 define('MAINTENANCE_MODE', false);
 
 // Configure database path for Wasmer
-define('DB_PATH', __DIR__ . '/../database/database.sqlite');
+// Use /tmp for writable database in ephemeral Wasmer containers
+define('DB_PATH', getenv('DB_PATH') ?: '/tmp/moviehub.sqlite');
 
-// Configure storage paths
-define('STORAGE_PATH', __DIR__ . '/../storage/');
-define('CACHE_PATH', __DIR__ . '/../cache/');
-define('UPLOADS_PATH', __DIR__ . '/../storage/uploads/');
+// Use /tmp for all writable storage in Wasmer
+define('STORAGE_PATH', '/tmp/storage/');
+define('CACHE_PATH', '/tmp/cache/');
+define('UPLOADS_PATH', '/tmp/storage/uploads/');
 
-// Wasmer-specific optimizations
-if (APP_ENV === 'production') {
-    ini_set('display_errors', '0');
-    error_reporting(E_ERROR | E_PARSE);
-} else {
-    ini_set('display_errors', '1');
-    error_reporting(E_ALL);
-}
-
-// Ensure required directories exist
+// Ensure required directories exist in /tmp
 $requiredDirs = [
-    __DIR__ . '/../database',
-    __DIR__ . '/../storage',
-    __DIR__ . '/../storage/uploads',
-    __DIR__ . '/../storage/uploads/posters',
-    __DIR__ . '/../storage/uploads/banners',
-    __DIR__ . '/../storage/uploads/screenshots',
-    __DIR__ . '/../storage/uploads/trailers',
-    __DIR__ . '/../storage/uploads/avatars',
-    __DIR__ . '/../cache',
-    __DIR__ . '/../logs',
+    '/tmp',
+    '/tmp/storage',
+    '/tmp/storage/uploads',
+    '/tmp/storage/uploads/posters',
+    '/tmp/storage/uploads/banners',
+    '/tmp/storage/uploads/screenshots',
+    '/tmp/storage/uploads/trailers',
+    '/tmp/storage/uploads/avatars',
+    '/tmp/cache',
+    '/tmp/logs',
 ];
 
 foreach ($requiredDirs as $dir) {
     if (!is_dir($dir)) {
-        @mkdir($dir, 0755, true);
+        @mkdir($dir, 0777, true);
     }
 }
 
@@ -76,14 +68,36 @@ if (!file_exists(DB_PATH)) {
                 }
             }
         }
+
+        $seeds = file_get_contents(__DIR__ . '/../database/seeds.sql');
+        if ($seeds) {
+            $queries = array_filter(array_map('trim', explode(';', $seeds)));
+            foreach ($queries as $query) {
+                if (!empty($query)) {
+                    try {
+                        $db->exec($query);
+                    } catch (PDOException $e) {
+                        // Ignore duplicate key errors
+                    }
+                }
+            }
+        }
     } catch (PDOException $e) {
         error_log('Database initialization failed: ' . $e->getMessage());
     }
 }
 
+// Override config values for Wasmer
 return [
     'APP_ENV' => APP_ENV,
     'APP_DEBUG' => APP_DEBUG,
     'APP_URL' => APP_URL,
     'DB_PATH' => DB_PATH,
+    'STORAGE_PATH' => STORAGE_PATH,
+    'CACHE_PATH' => CACHE_PATH,
+    'UPLOAD_MAX_SIZE' => 50 * 1024 * 1024,
+    'UPLOAD_ALLOWED_TYPES' => [
+        'image/jpeg', 'image/png', 'image/gif', 'image/webp',
+        'video/mp4', 'video/webm',
+    ],
 ];

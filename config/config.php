@@ -3,16 +3,16 @@
 declare(strict_types=1);
 
 return [
-    'APP_NAME' => 'MovieHub',
-    'APP_URL' => 'http://localhost',
-    'APP_ENV' => 'development',
-    'APP_DEBUG' => true,
-    'APP_TIMEZONE' => 'UTC',
-    'APP_LANG' => 'en',
-    'APP_THEME' => 'dark',
+    'APP_NAME' => getenv('APP_NAME') ?: 'MovieHub',
+    'APP_URL' => getenv('APP_URL') ?: 'http://localhost',
+    'APP_ENV' => getenv('APP_ENV') ?: 'development',
+    'APP_DEBUG' => getenv('APP_DEBUG') === 'true',
+    'APP_TIMEZONE' => getenv('APP_TIMEZONE') ?: 'UTC',
+    'APP_LANG' => getenv('APP_LANG') ?: 'en',
+    'APP_THEME' => getenv('APP_THEME') ?: 'dark',
 
-    'DB_DRIVER' => 'sqlite',
-    'DB_PATH' => __DIR__ . '/../database/database.sqlite',
+    'DB_DRIVER' => getenv('DB_DRIVER') ?: 'sqlite',
+    'DB_PATH' => getenv('DB_PATH') ?: __DIR__ . '/../database/database.sqlite',
 
     'UPLOAD_MAX_SIZE' => 50 * 1024 * 1024,
     'UPLOAD_ALLOWED_TYPES' => [
