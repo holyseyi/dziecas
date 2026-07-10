@@ -7,7 +7,7 @@
     "documentRoot": "public",
     "env": {
       "APP_ENV": "production",
-      "APP_DEBUG": "false",
+      "APP_DEBUG": "true",
       "APP_URL": "https://dziecas.wasmer.app",
       "DB_PATH": "/tmp/moviehub.sqlite",
       "STORAGE_PATH": "/tmp/storage/",
