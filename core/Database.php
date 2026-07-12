@@ -50,13 +50,16 @@ class Database
      */
     private function initializeIfNeeded(): void
     {
+        error_log('DB init: users=' . ($this->tableExists('users') ? '1' : '0') . ' media=' . ($this->tableExists('media') ? '1' : '0'));
         try {
             if ($this->tableExists('users')) {
                 $this->ensureMediaTable();
                 $this->dropFeaturedContentFk();
+                error_log('DB init: ran migrations');
                 return;
             }
         } catch (\Throwable $e) {
+            error_log('DB init error: ' . $e->getMessage());
             // Unable to inspect the schema; attempt initialization below.
         }
 
@@ -109,6 +112,7 @@ class Database
         }
 
         $this->pdo->exec('PRAGMA foreign_keys = OFF');
+        $this->pdo->exec('DROP TABLE IF EXISTS featured_content_old');
         $this->pdo->exec('ALTER TABLE featured_content RENAME TO featured_content_old');
         $this->pdo->exec(
             "CREATE TABLE featured_content (
